@@ -1,0 +1,1 @@
+This is a simple terraria server manager intended to make managing a server easy. 
