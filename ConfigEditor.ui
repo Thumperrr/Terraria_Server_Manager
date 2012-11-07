@@ -23,14 +23,14 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Configuration Editor</string>
+   <string>Edit Configurations</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>9</x>
      <y>10</y>
-     <width>341</width>
+     <width>347</width>
      <height>234</height>
     </rect>
    </property>
