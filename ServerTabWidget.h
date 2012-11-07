@@ -4,6 +4,10 @@
 #include <QWidget>
 #include <QProcess>
 #include <QTimer>
+#include <QMap>
+#include <QPointer>
+#include <QListWidgetItem>
+#include "Utility.h"
 
 namespace Ui {
    class ServerTabWidget;
@@ -28,7 +32,11 @@ private:
     QProcess *serverProcess;
     QString config;
     QTimer *saveTimer;
-    QStringList *players;
+    QMap<QString, QListWidgetItem*> players;
+
+    void processLine(QString line);
+
+    bool playerConnecting;
 };
 
 #endif // SERVERTABWIDGET_H

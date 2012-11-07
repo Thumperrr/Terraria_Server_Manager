@@ -14,6 +14,7 @@ ServerTabWidget::~ServerTabWidget()
 {
     delete ui;
     delete serverProcess;
+    delete saveTimer;
 }
 
 void ServerTabWidget::init()
@@ -49,9 +50,7 @@ void ServerTabWidget::readAllStandardOutput()
             break;
         else
         {
-            if(line.contains("!server noon"))
-                writeToProcess("noon");
-            ui->textBrowser_ServerOutput->append(line);
+            processLine(line);
         }
     }
 }
@@ -71,6 +70,47 @@ void ServerTabWidget::writeToProcess(QString text)
 
 void ServerTabWidget::saveTimer_Timeout()
 {
-    writeToProcess("save");
-    saveTimer->start();
+    if(!players.isEmpty()) //don't save if no one is connected -- no changes could be made.
+    {
+        writeToProcess("save");
+        ui->textBrowser_ServerOutput->append("Saving world...");
+        saveTimer->start();
+    }
+}
+
+void ServerTabWidget::processLine(QString line)
+{
+    bool appendOutput = true;
+
+    if(line.contains("has joined.")) //a player might be joining
+    {
+        QString playerName = Utility::word(line);
+
+        //check to see if a player actually joined
+        //and someone didn't just type "has joined." in chat.
+        if(playerName + " has joined." == line)
+        {
+            QListWidgetItem *newItem = new QListWidgetItem(playerName);
+            players.insert(playerName, newItem);
+            ui->listWidget_Players->addItem(newItem);
+        }
+    }
+    else if(line.contains("has left.")) //a player might have left
+    {
+        QString playerName = Utility::word(line);
+
+        if(playerName + " has left." == line)
+        {
+            ui->listWidget_Players->removeItemWidget(players[playerName]);
+            delete players[playerName];
+            players.remove(playerName);
+        }
+    }
+    else if(line.contains("Saving world data:"))
+    {    //do nothing to prevent output area from being clogged up.
+        appendOutput = false;
+    }
+
+    if(appendOutput)
+        ui->textBrowser_ServerOutput->append(line);
 }
