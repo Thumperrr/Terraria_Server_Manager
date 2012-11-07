@@ -1,8 +1,6 @@
 #include "ConfigEditor.h"
 #include "ui_ConfigEditor.h"
-#include <QFileDialog>
-#include <QFile>
-#include <QTextStream>
+
 
 
 ConfigEditor::ConfigEditor(QWidget *parent) :
@@ -121,31 +119,31 @@ Configuration ConfigEditor::loadConfig(QString _config)
         if(!line.contains("#")) //is a comment (first line); ignore
         {
             if(line[0] == '@') //Configuration.name
-                ret.name = right(line, '@');
+                ret.name = Utility::right(line, '@');
             else if(line.contains("maxplayers="))
-                ret.maxPlayers = right(line, '=').toInt();
+                ret.maxPlayers = Utility::right(line, '=').toInt();
             else if(line.contains("world="))
-                ret.world = right(line, '=');
+                ret.world = Utility::right(line, '=');
             else if(line.contains("port="))
-                ret.port = right(line, '=').toInt();
+                ret.port = Utility::right(line, '=').toInt();
             else if(line.contains("password="))
-                ret.password = right(line, '=');
+                ret.password = Utility::right(line, '=');
             else if(line.contains("motd="))
-                ret.motd = right(line, '=');
+                ret.motd = Utility::right(line, '=');
             else if(line.contains("worldpath="))
-                ret.worldpath = right(line, '=');
+                ret.worldpath = Utility::right(line, '=');
             else if(line.contains("autocreate="))
-                ret.autocreate = right(line, '=').toInt();
+                ret.autocreate = Utility::right(line, '=').toInt();
             else if(line.contains("worldname="))
-                ret.worldname = right(line, '=');
+                ret.worldname = Utility::right(line, '=');
             else if(line.contains("banlist="))
-                ret.banlist = right(line, '=');
+                ret.banlist = Utility::right(line, '=');
             else if(line.contains("secure="))
-                ret.secure = right(line, '=').toInt();
+                ret.secure = Utility::right(line, '=').toInt();
             else if(line.contains("lang="))
-                ret.lang = right(line, '=').toInt();
+                ret.lang = Utility::right(line, '=').toInt();
             else if(line.contains("priority"))
-                ret.priority = right(line, '=').toInt();
+                ret.priority = Utility::right(line, '=').toInt();
         }
     }
 
@@ -171,10 +169,3 @@ void ConfigEditor::editConfig(Configuration _config)
     else
         ui->checkBox_Secure->setCheckState(Qt::Unchecked);
 }
-
-QString ConfigEditor::right(QString &configLine, char separator) {
-    std::string stdConfigLine = configLine.toStdString();
-    std::string ret = stdConfigLine.substr(stdConfigLine.find(separator)+1, std::string::npos);
-    return QString::fromStdString(ret);
-}
-

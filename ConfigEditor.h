@@ -3,7 +3,10 @@
 
 #include <QDialog>
 #include <QMessageBox>
-#include <string>
+#include <QFileDialog>
+#include <QFile>
+#include <QTextStream>
+#include "Utility.h"
 
 struct Configuration {
     QString name; //name of the configuration
@@ -42,13 +45,10 @@ public slots:
     void pushButton_World_Pressed();
 
 private:
-    static QString right(QString &configLine, char separator);
     void saveToFile();
 
     Ui::ConfigEditor *ui;
     Configuration config;
-
-
 
     bool editingMode;
     QString oldName; //used to tell if the name changed, so that ConfigEditor doesn't create a new file with a new name and leave the old one.

@@ -1,9 +1,5 @@
 #include "ConfigManager.h"
 #include "ui_ConfigManager.h"
-#include <QListWidgetItem>
-#include <QDir>
-#include "ConfigEditor.h"
-#include <QMessageBox>
 
 ConfigManager::ConfigManager(QWidget *parent) :
     QDialog(parent),
@@ -60,21 +56,13 @@ void ConfigManager::pushButton_New_Pressed()
     refresh_listWidget_ConfigList();
 }
 
-QString ConfigManager::left(QString &configLine, char separator) {
-    std::string stdConfigLine = configLine.toStdString();
-    std::string ret = stdConfigLine.substr(0, stdConfigLine.find(separator));
-    return QString::fromStdString(ret);
-}
-
 void ConfigManager::refresh_listWidget_ConfigList()
 {
     ui->listWidget_ConfigList->clear(); //clear list
 
-    QDir *currentDir = new QDir(QDir::currentPath());
-    QStringList files = currentDir->entryList(QStringList("*.cfg"), QDir::NoFilter, QDir::Name);
+    QStringList files = Utility::getDirectoryEntryList(QStringList("*.cfg"));
 
     QString str;
     foreach(str, files)
-        ui->listWidget_ConfigList->addItem(left(str, '.'));
-    delete currentDir;
+        ui->listWidget_ConfigList->addItem(Utility::left(str, '.'));
 }

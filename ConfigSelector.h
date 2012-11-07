@@ -2,6 +2,7 @@
 #define CONFIGSELECTOR_H
 
 #include <QDialog>
+#include "Utility.h"
 
 namespace Ui {
 class ConfigSelector;
@@ -22,7 +23,6 @@ public slots:
 private:
     Ui::ConfigSelector *ui;
     QString config;
-    QString left(QString &configLine, char separator);
 };
 
 #endif // CONFIGSELECTOR_H

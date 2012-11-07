@@ -2,6 +2,10 @@
 #define CONFIGMANAGER_H
 
 #include <QDialog>
+#include <QListWidgetItem>
+#include <QMessageBox>
+#include "ConfigEditor.h"
+#include "Utility.h"
 
 namespace Ui {
 class ConfigManager;
@@ -22,7 +26,6 @@ public slots:
     void pushButton_Done_Pressed();
     
 private:
-    QString left(QString &configLine, char separator);
     void refresh_listWidget_ConfigList();
     Ui::ConfigManager *ui;
 };

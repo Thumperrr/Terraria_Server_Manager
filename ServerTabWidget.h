@@ -28,6 +28,7 @@ private:
     QProcess *serverProcess;
     QString config;
     QTimer *saveTimer;
+    QStringList *players;
 };
 
 #endif // SERVERTABWIDGET_H

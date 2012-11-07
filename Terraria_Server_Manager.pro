@@ -16,14 +16,16 @@ SOURCES += main.cpp\
     ConfigEditor.cpp \
     ConfigManager.cpp \
     ConfigSelector.cpp \
-    Options.cpp
+    Options.cpp \
+    Utility.cpp
 
 HEADERS  += mainwindow.h \
     ServerTabWidget.h \
     ConfigEditor.h \
     ConfigManager.h \
     ConfigSelector.h \
-    Options.h
+    Options.h \
+    Utility.h
 
 FORMS    += mainwindow.ui \
     ServerTabWidget.ui \
