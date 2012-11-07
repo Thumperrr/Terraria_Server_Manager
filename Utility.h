@@ -9,6 +9,8 @@ namespace Utility
 {
     QString left(QString line, char separator);
     QString right(QString line, char separator);
+    QString word(QString line, int wordNumber = 1);
+    QStringList splitString(QString line, QString separator = " ");
     QStringList getDirectoryEntryList(QStringList nameFilters, QString path = QDir::currentPath());
 }
 
