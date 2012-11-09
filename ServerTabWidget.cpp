@@ -15,6 +15,8 @@ along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QMessageBox>
 #include <QTextStream>
+#include <QRegExp>
+#include <QList>
 #include "ServerTabWidget.h"
 #include "ui_ServerTabWidget.h"
 
@@ -30,18 +32,25 @@ ServerTabWidget::~ServerTabWidget()
     delete ui;
     delete serverProcess;
     delete saveTimer;
+    delete playersModel;
 }
 
 void ServerTabWidget::init()
 {
     serverProcess = new QProcess();
     saveTimer = new QTimer;
+    playersModel = new QStringListModel(players);
+    playersFilterModel = new QSortFilterProxyModel();
+
     saveTimer->setInterval(60000);
     saveTimer->start();
+    playersFilterModel->setSourceModel(playersModel);
+    ui->listView_Players->setModel(playersFilterModel);
 
     connect(serverProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readAllStandardOutput()));
     connect(ui->lineEdit_ServerInput, SIGNAL(returnPressed()), this, SLOT(writeToProcess()));
     connect(saveTimer, SIGNAL(timeout()), this, SLOT(saveTimer_Timeout()));
+    connect(ui->lineEdit_SearchPlayers, SIGNAL(textChanged(QString)), this, SLOT(lineEdit_SearchPlayers_textChanged()));
 
     QString pro = "TerrariaServer.exe";
     QStringList args;
@@ -93,6 +102,22 @@ void ServerTabWidget::saveTimer_Timeout()
     }
 }
 
+void ServerTabWidget::lineEdit_SearchPlayers_textChanged()
+{
+    update_listView_Players_Filter();
+}
+
+void ServerTabWidget::update_listView_Players()
+{
+    playersModel->setStringList(players);
+}
+
+void ServerTabWidget::update_listView_Players_Filter()
+{
+    QRegExp regExp(ui->lineEdit_SearchPlayers->text(), Qt::CaseInsensitive, QRegExp::Wildcard);
+    playersFilterModel->setFilterRegExp(regExp);
+}
+
 void ServerTabWidget::processLine(QString line)
 {
     bool appendOutput = true;
@@ -105,20 +130,26 @@ void ServerTabWidget::processLine(QString line)
         //and someone didn't just type "has joined." in chat.
         if(playerName + " has joined." == line)
         {
-            QListWidgetItem *newItem = new QListWidgetItem(playerName);
-            players.insert(playerName, newItem);
-            ui->listWidget_Players->addItem(newItem);
+            players.push_back(playerName);
+            update_listView_Players();
         }
     }
     else if(line.contains("has left.")) //a player might have left
     {
-        QString playerName = Utility::word(line);
+        QString playerName;
+        if(line[0] == ':')
+            playerName = Utility::word(line, 2);
+        else
+            playerName = Utility::word(line);
 
-        if(playerName + " has left." == line)
+        if(playerName + " has left." == line || ": " + playerName + " has left." == line)
         {
-            ui->listWidget_Players->removeItemWidget(players[playerName]);
-            delete players[playerName];
-            players.remove(playerName);
+            QStringList::Iterator i;
+            for(i = players.begin(); i != players.end(); ++i)
+                if(*i == playerName) {
+                    players.erase(i);
+                }
+            update_listView_Players();
         }
     }
     else if(line.contains("Saving world data:"))

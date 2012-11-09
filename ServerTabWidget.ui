@@ -56,12 +56,18 @@
       </layout>
      </item>
      <item>
-      <widget class="QListWidget" name="listWidget_Players">
+      <widget class="QListView" name="listView_Players">
        <property name="maximumSize">
         <size>
          <width>175</width>
          <height>135</height>
         </size>
+       </property>
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
        </property>
       </widget>
      </item>
@@ -95,10 +101,6 @@
     </layout>
    </item>
   </layout>
-  <zorder>textBrowser_WorldInfo</zorder>
-  <zorder>listWidget_Players</zorder>
-  <zorder>lineEdit_SearchPlayers</zorder>
-  <zorder>textBrowser_ServerOutput</zorder>
  </widget>
  <resources/>
  <connections/>
