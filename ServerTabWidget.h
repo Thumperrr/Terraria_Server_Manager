@@ -22,6 +22,10 @@ along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMap>
 #include <QPointer>
 #include <QListWidgetItem>
+#include <QStringList>
+#include <QStringListModel>
+#include <QSortFilterProxyModel>
+#include <QRegExp>
 #include "Utility.h"
 
 namespace Ui {
@@ -41,15 +45,21 @@ public slots:
     void readAllStandardOutput();
     void writeToProcess();
     void saveTimer_Timeout();
+    void lineEdit_SearchPlayers_textChanged();
 
 private:
     Ui::ServerTabWidget *ui;
     QProcess *serverProcess;
     QString config;
     QTimer *saveTimer;
-    QMap<QString, QListWidgetItem*> players;
+    QStringListModel *playersModel;
+    QSortFilterProxyModel *playersFilterModel;
+    QStringList players;
+
 
     void processLine(QString line);
+    void update_listView_Players();
+    void update_listView_Players_Filter();
 
     bool playerConnecting;
 };
