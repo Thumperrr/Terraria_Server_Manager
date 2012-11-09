@@ -16,7 +16,6 @@ along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMessageBox>
 #include <QTextStream>
 #include <QRegExp>
-#include <QList>
 #include "ServerTabWidget.h"
 #include "ui_ServerTabWidget.h"
 
@@ -145,10 +144,12 @@ void ServerTabWidget::processLine(QString line)
         if(playerName + " has left." == line || ": " + playerName + " has left." == line)
         {
             QStringList::Iterator i;
-            for(i = players.begin(); i != players.end(); ++i)
+            for(i = players.begin(); i < players.end(); ++i) {
                 if(*i == playerName) {
-                    players.erase(i);
+                    players.removeOne(playerName);
+                    break;
                 }
+            }
             update_listView_Players();
         }
     }

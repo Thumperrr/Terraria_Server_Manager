@@ -19,9 +19,6 @@ along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>.
 #include <QWidget>
 #include <QProcess>
 #include <QTimer>
-#include <QMap>
-#include <QPointer>
-#include <QListWidgetItem>
 #include <QStringList>
 #include <QStringListModel>
 #include <QSortFilterProxyModel>
@@ -52,6 +49,7 @@ private:
     QProcess *serverProcess;
     QString config;
     QTimer *saveTimer;
+
     QStringListModel *playersModel;
     QSortFilterProxyModel *playersFilterModel;
     QStringList players;
