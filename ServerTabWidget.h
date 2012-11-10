@@ -43,11 +43,11 @@ public:
     void writeToProcess(QString text);
 
 public slots:
-    void on_serverProcess_readyReadStandardOutput();
-    void on_lineEdit_ServerInput_returnPressed();
-    void on_saveTimer_Timeout();
-    void on_lineEdit_SearchPlayers_textChanged();
-    void on_listView_Players_customContextMenuRequested(QPoint p);
+    void slot_serverProcess_readyReadStandardOutput();
+    void slot_lineEdit_ServerInput_returnPressed();
+    void slot_saveTimer_Timeout();
+    void slot_lineEdit_SearchPlayers_textChanged();
+    void slot_listView_Players_customContextMenuRequested(QPoint p);
 
 private:
     Ui::ServerTabWidget *ui;

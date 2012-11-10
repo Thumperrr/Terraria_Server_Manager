@@ -43,11 +43,11 @@ void ServerTabWidget::init()
     playersFilterModel->setSourceModel(playersModel);
     ui->listView_Players->setModel(playersFilterModel);
 
-    connect(serverProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(on_serverProcess_readyReadStandardOutput()));
-    connect(ui->lineEdit_ServerInput, SIGNAL(returnPressed()), this, SLOT(on_lineEdit_ServerInput_returnPressed()));
-    connect(saveTimer, SIGNAL(timeout()), this, SLOT(on_saveTimer_Timeout()));
-    connect(ui->lineEdit_SearchPlayers, SIGNAL(textChanged(QString)), this, SLOT(on_lineEdit_SearchPlayers_textChanged()));
-    connect(ui->listView_Players, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(on_listView_Players_customContextMenuRequested(QPoint)));
+    connect(serverProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(slot_serverProcess_readyReadStandardOutput()));
+    connect(ui->lineEdit_ServerInput, SIGNAL(returnPressed()), this, SLOT(slot_lineEdit_ServerInput_returnPressed()));
+    connect(saveTimer, SIGNAL(timeout()), this, SLOT(slot_saveTimer_Timeout()));
+    connect(ui->lineEdit_SearchPlayers, SIGNAL(textChanged(QString)), this, SLOT(slot_lineEdit_SearchPlayers_textChanged()));
+    connect(ui->listView_Players, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slot_listView_Players_customContextMenuRequested(QPoint)));
 
     QString pro = "TerrariaServer.exe";
     QStringList args;
@@ -61,7 +61,7 @@ void ServerTabWidget::init()
     }
 }
 
-void ServerTabWidget::on_serverProcess_readyReadStandardOutput()
+void ServerTabWidget::slot_serverProcess_readyReadStandardOutput()
 {
     QTextStream stream(serverProcess->readAllStandardOutput());
     while(true)
@@ -76,13 +76,13 @@ void ServerTabWidget::on_serverProcess_readyReadStandardOutput()
     }
 }
 
-void ServerTabWidget::on_lineEdit_ServerInput_returnPressed()
+void ServerTabWidget::slot_lineEdit_ServerInput_returnPressed()
 {
     writeToProcess(ui->lineEdit_ServerInput->text());
     ui->lineEdit_ServerInput->clear();
 }
 
-void ServerTabWidget::on_saveTimer_Timeout()
+void ServerTabWidget::slot_saveTimer_Timeout()
 {
     if(!players.isEmpty()) //don't save if no one is connected -- no changes could be made.
     {
@@ -92,12 +92,12 @@ void ServerTabWidget::on_saveTimer_Timeout()
     }
 }
 
-void ServerTabWidget::on_lineEdit_SearchPlayers_textChanged()
+void ServerTabWidget::slot_lineEdit_SearchPlayers_textChanged()
 {
     update_listView_Players_Filter();
 }
 
-void ServerTabWidget::on_listView_Players_customContextMenuRequested(QPoint p)
+void ServerTabWidget::slot_listView_Players_customContextMenuRequested(QPoint p)
 {
     if(players.isEmpty())
         return;

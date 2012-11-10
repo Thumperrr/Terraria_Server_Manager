@@ -23,9 +23,9 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     editingMode = false;
 
     ui->setupUi(this);
-    connect(ui->pushButton_Cancel, SIGNAL(clicked()), this, SLOT(on_pushButton_Cancel_clicked()));
-    connect(ui->pushButton_Save, SIGNAL(clicked()), this, SLOT(on_pushButton_Save_clicked()));
-    connect(ui->pushButton_World, SIGNAL(clicked()), this, SLOT(on_pushButton_World_clicked()));
+    connect(ui->pushButton_Cancel, SIGNAL(clicked()), this, SLOT(slot_pushButton_Cancel_clicked()));
+    connect(ui->pushButton_Save, SIGNAL(clicked()), this, SLOT(slot_pushButton_Save_clicked()));
+    connect(ui->pushButton_World, SIGNAL(clicked()), this, SLOT(slot_pushButton_World_clicked()));
     ui->lineEdit_AutoCreateName->setText("Auto Created World");
 }
 
@@ -34,12 +34,12 @@ ConfigEditor::~ConfigEditor()
     delete ui;
 }
 
-void ConfigEditor::on_pushButton_Cancel_clicked()
+void ConfigEditor::slot_pushButton_Cancel_clicked()
 {
-    close();
+    done(0);
 }
 
-void ConfigEditor::on_pushButton_Save_clicked()
+void ConfigEditor::slot_pushButton_Save_clicked()
 {
     config.name = ui->lineEdit_Name->text();
     config.world = ui->lineEdit_World->text();
@@ -74,7 +74,7 @@ void ConfigEditor::on_pushButton_Save_clicked()
     close();
 }
 
-void ConfigEditor::on_pushButton_World_clicked()
+void ConfigEditor::slot_pushButton_World_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
                                             tr("Select World File"), QString(),

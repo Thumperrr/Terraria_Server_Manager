@@ -55,9 +55,9 @@ public:
     void editConfig(Configuration _config);
 
 public slots:
-    void on_pushButton_Save_clicked();
-    void on_pushButton_Cancel_clicked();
-    void on_pushButton_World_clicked();
+    void slot_pushButton_Save_clicked();
+    void slot_pushButton_Cancel_clicked();
+    void slot_pushButton_World_clicked();
 
 private:
     void saveToFile();

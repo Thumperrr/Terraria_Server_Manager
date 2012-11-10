@@ -35,10 +35,10 @@ public:
     ~ConfigManager();
 
 public slots:
-    void on_pushButton_Delete_clicked();
-    void on_pushButton_Edit_clicked();
-    void on_pushButton_New_clicked();
-    void on_pushButton_Done_clicked();
+    void slot_pushbutton_Delete_clicked();
+    void slot_pushbutton_Edit_clicked();
+    void slot_pushbutton_New_clicked();
+    void slot_pushbutton_Done_clicked();
     
 private:
     void refresh_listWidget_ConfigList();

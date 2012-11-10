@@ -21,7 +21,7 @@ ConfigSelector::ConfigSelector(QWidget *parent) :
     ui(new Ui::ConfigSelector)
 {
     ui->setupUi(this);
-    connect(ui->listWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_listWidget_doubleClicked()));
+    connect(ui->listWidget, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slot_listWidget_doubleClicked()));
 
     QStringList files = Utility::getDirectoryEntryList(QStringList("*.cfg"));
     QString str;
@@ -34,10 +34,10 @@ ConfigSelector::~ConfigSelector()
     delete ui;
 }
 
-void ConfigSelector::on_listWidget_doubleClicked()
+void ConfigSelector::slot_listWidget_doubleClicked()
 {
     config = ui->listWidget->currentItem()->text();
-    close();
+    done(0);
 }
 
 QString ConfigSelector::getConfig()

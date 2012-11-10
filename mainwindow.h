@@ -26,10 +26,10 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public slots:
-    void on_actionShutdown_triggered();
-    void on_actionConfigurations_triggered();
-    void on_actionHost_triggered();
-    void on_actionOptions_triggered();
+    void slot_actionShutdown_triggered();
+    void slot_actionConfigurations_triggered();
+    void slot_actionHost_triggered();
+    void slot_actionOptions_triggered();
     
 public:
     explicit MainWindow(QWidget *parent = 0);

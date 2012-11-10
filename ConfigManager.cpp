@@ -21,11 +21,11 @@ ConfigManager::ConfigManager(QWidget *parent) :
     ui(new Ui::ConfigManager)
 {
     ui->setupUi(this);
-    connect(ui->pushButton_Done, SIGNAL(clicked()), this, SLOT(on_pushButton_Done_clicked()));
-    connect(ui->pushButton_Delete, SIGNAL(clicked()), this, SLOT(on_pushButton_Delete_clicked()));
-    connect(ui->pushButton_Edit, SIGNAL(clicked()), this, SLOT(on_pushButton_Edit_clicked()));
-    connect(ui->pushButton_New, SIGNAL(clicked()), this, SLOT(on_pushButton_New_clicked()));
-    connect(ui->listWidget_ConfigList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_pushButton_Edit_clicked()));
+    connect(ui->pushButton_Done, SIGNAL(clicked()), this, SLOT(slot_pushbutton_Done_clicked()));
+    connect(ui->pushButton_Delete, SIGNAL(clicked()), this, SLOT(slot_pushbutton_Delete_clicked()));
+    connect(ui->pushButton_Edit, SIGNAL(clicked()), this, SLOT(slot_pushbutton_Edit_clicked()));
+    connect(ui->pushButton_New, SIGNAL(clicked()), this, SLOT(slot_pushbutton_New_clicked()));
+    connect(ui->listWidget_ConfigList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slot_pushbutton_Edit_clicked()));
 
     //load configs into list view (every file in the directory with a .cfg extension)
     refresh_listWidget_ConfigList();
@@ -36,11 +36,11 @@ ConfigManager::~ConfigManager()
     delete ui;
 }
 
-void ConfigManager::on_pushButton_Done_clicked()
+void ConfigManager::slot_pushbutton_Done_clicked()
 {
     close();
 }
-void ConfigManager::on_pushButton_Delete_clicked()
+void ConfigManager::slot_pushbutton_Delete_clicked()
 {
     QString configName = ui->listWidget_ConfigList->currentItem()->text();
 
@@ -51,7 +51,7 @@ void ConfigManager::on_pushButton_Delete_clicked()
     configFile.remove();
     refresh_listWidget_ConfigList();
 }
-void ConfigManager::on_pushButton_Edit_clicked()
+void ConfigManager::slot_pushbutton_Edit_clicked()
 {
     QString configName = ui->listWidget_ConfigList->currentItem()->text();
     ConfigEditor *configEditor = new ConfigEditor(this);
@@ -61,7 +61,7 @@ void ConfigManager::on_pushButton_Edit_clicked()
 
     refresh_listWidget_ConfigList();
 }
-void ConfigManager::on_pushButton_New_clicked()
+void ConfigManager::slot_pushbutton_New_clicked()
 {
     //start a ConfigEditor, then refresh the listWidget.
     ConfigEditor *configEditor = new ConfigEditor();

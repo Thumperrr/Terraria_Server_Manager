@@ -35,27 +35,27 @@ MainWindow::~MainWindow()
 void MainWindow::init()
 {
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
-    connect(ui->actionHost, SIGNAL(triggered()), this, SLOT(on_actionHost_triggered()));
-    connect(ui->actionShutdown, SIGNAL(triggered()), this, SLOT(on_actionShutdown_triggered()));
-    connect(ui->actionConfigurations, SIGNAL(triggered()), this, SLOT(on_actionConfigurations_triggered()));
-    connect(ui->actionOptions, SIGNAL(triggered()), this, SLOT(on_actionOptions_triggered()));
+    connect(ui->actionHost, SIGNAL(triggered()), this, SLOT(slot_actionHost_triggered()));
+    connect(ui->actionShutdown, SIGNAL(triggered()), this, SLOT(slot_actionShutdown_triggered()));
+    connect(ui->actionConfigurations, SIGNAL(triggered()), this, SLOT(slot_actionConfigurations_triggered()));
+    connect(ui->actionOptions, SIGNAL(triggered()), this, SLOT(slot_actionOptions_triggered()));
 }
 
-void MainWindow::on_actionShutdown_triggered()
+void MainWindow::slot_actionShutdown_triggered()
 {
     removeSelectedServerTab();
 }
 
-void MainWindow::on_actionConfigurations_triggered()
+void MainWindow::slot_actionConfigurations_triggered()
 {
     ConfigManager *configManager = new ConfigManager(this);
     configManager->exec();
     delete configManager;
 }
 
-void MainWindow::on_actionHost_triggered()
+void MainWindow::slot_actionHost_triggered()
 {
-    //launch a ConfigBrowser
+    //launch a ConfigSelector
     ConfigSelector *configSelector = new ConfigSelector(this);
     configSelector->exec();
 
@@ -65,7 +65,7 @@ void MainWindow::on_actionHost_triggered()
     delete configSelector;
 }
 
-void MainWindow::on_actionOptions_triggered()
+void MainWindow::slot_actionOptions_triggered()
 {
    /* Options *options = new Options(this);
     options->exec();
