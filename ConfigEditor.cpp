@@ -16,8 +16,6 @@ along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>.
 #include "ConfigEditor.h"
 #include "ui_ConfigEditor.h"
 
-
-
 ConfigEditor::ConfigEditor(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ConfigEditor)
@@ -25,9 +23,9 @@ ConfigEditor::ConfigEditor(QWidget *parent) :
     editingMode = false;
 
     ui->setupUi(this);
-    connect(ui->pushButton_Cancel, SIGNAL(pressed()), this, SLOT(pushButton_Cancel_Pressed()));
-    connect(ui->pushButton_Save, SIGNAL(pressed()), this, SLOT(pushButton_Save_Pressed()));
-    connect(ui->pushButton_World, SIGNAL(pressed()), this, SLOT(pushButton_World_Pressed()));
+    connect(ui->pushButton_Cancel, SIGNAL(clicked()), this, SLOT(on_pushButton_Cancel_clicked()));
+    connect(ui->pushButton_Save, SIGNAL(clicked()), this, SLOT(on_pushButton_Save_clicked()));
+    connect(ui->pushButton_World, SIGNAL(clicked()), this, SLOT(on_pushButton_World_clicked()));
     ui->lineEdit_AutoCreateName->setText("Auto Created World");
 }
 
@@ -36,12 +34,12 @@ ConfigEditor::~ConfigEditor()
     delete ui;
 }
 
-void ConfigEditor::pushButton_Cancel_Pressed()
+void ConfigEditor::on_pushButton_Cancel_clicked()
 {
     close();
 }
 
-void ConfigEditor::pushButton_Save_Pressed()
+void ConfigEditor::on_pushButton_Save_clicked()
 {
     config.name = ui->lineEdit_Name->text();
     config.world = ui->lineEdit_World->text();
@@ -76,7 +74,7 @@ void ConfigEditor::pushButton_Save_Pressed()
     close();
 }
 
-void ConfigEditor::pushButton_World_Pressed()
+void ConfigEditor::on_pushButton_World_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
                                             tr("Select World File"), QString(),

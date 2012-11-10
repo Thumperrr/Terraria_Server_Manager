@@ -35,10 +35,44 @@ MainWindow::~MainWindow()
 void MainWindow::init()
 {
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
-    connect(ui->actionHost, SIGNAL(triggered()), this, SLOT(actionHost_Triggered()));
-    connect(ui->actionShutdown, SIGNAL(triggered()), this, SLOT(removeSelectedServerTab()));
-    connect(ui->actionConfigurations, SIGNAL(triggered()), this, SLOT(actionConfigurations_Triggered()));
-    connect(ui->actionOptions, SIGNAL(triggered()), this, SLOT(actionOptions_Triggered()));
+    connect(ui->actionHost, SIGNAL(triggered()), this, SLOT(on_actionHost_triggered()));
+    connect(ui->actionShutdown, SIGNAL(triggered()), this, SLOT(on_actionShutdown_triggered()));
+    connect(ui->actionConfigurations, SIGNAL(triggered()), this, SLOT(on_actionConfigurations_triggered()));
+    connect(ui->actionOptions, SIGNAL(triggered()), this, SLOT(on_actionOptions_triggered()));
+}
+
+void MainWindow::on_actionShutdown_triggered()
+{
+    removeSelectedServerTab();
+}
+
+void MainWindow::on_actionConfigurations_triggered()
+{
+    ConfigManager *configManager = new ConfigManager(this);
+    configManager->exec();
+    delete configManager;
+}
+
+void MainWindow::on_actionHost_triggered()
+{
+    //launch a ConfigBrowser
+    ConfigSelector *configSelector = new ConfigSelector(this);
+    configSelector->exec();
+
+    QString config = configSelector->getConfig();
+    if(!config.isNull() && !config.isEmpty())
+        addServerTab(config);
+    delete configSelector;
+}
+
+void MainWindow::on_actionOptions_triggered()
+{
+   /* Options *options = new Options(this);
+    options->exec();
+    int isaveTimer = options->getSaveMinutes();
+    delete options;*/
+
+    //TODO
 }
 
 void MainWindow::addServerTab(QString name) {
@@ -51,33 +85,4 @@ void MainWindow::removeSelectedServerTab() {
     QWidget *instance = ui->tabWidget->widget(index);
     ui->tabWidget->removeTab(index);
     delete instance;
-}
-
-void MainWindow::actionConfigurations_Triggered()
-{
-    ConfigManager *configManager = new ConfigManager(this);
-    configManager->exec();
-    delete configManager;
-}
-
-void MainWindow::actionHost_Triggered()
-{
-    //launch a ConfigBrowser
-    ConfigSelector *configSelector = new ConfigSelector(this);
-    configSelector->exec();
-
-    QString config = configSelector->getConfig();
-    if(!config.isNull() && !config.isEmpty())
-        addServerTab(config);
-    delete configSelector;
-}
-
-void MainWindow::actionOptions_Triggered()
-{
-   /* Options *options = new Options(this);
-    options->exec();
-    int isaveTimer = options->getSaveMinutes();
-    delete options;*/
-
-    //TODO
 }

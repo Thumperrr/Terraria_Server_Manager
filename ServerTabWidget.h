@@ -25,6 +25,8 @@ along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>.
 #include <QRegExp>
 #include <QMenu>
 #include <QAction>
+#include <QMessageBox>
+#include <QTextStream>
 #include "Utility.h"
 
 namespace Ui {
@@ -41,11 +43,11 @@ public:
     void writeToProcess(QString text);
 
 public slots:
-    void readAllStandardOutput();
-    void writeToProcess();
-    void saveTimer_Timeout();
-    void lineEdit_SearchPlayers_textChanged();
-    void listView_Players_customContextMenuRequested(QPoint p);
+    void on_serverProcess_readyReadStandardOutput();
+    void on_lineEdit_ServerInput_returnPressed();
+    void on_saveTimer_Timeout();
+    void on_lineEdit_SearchPlayers_textChanged();
+    void on_listView_Players_customContextMenuRequested(QPoint p);
 
 private:
     Ui::ServerTabWidget *ui;

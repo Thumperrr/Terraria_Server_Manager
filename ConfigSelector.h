@@ -33,7 +33,7 @@ public:
     QString getConfig();
 
 public slots:
-    void listWidget_DoubleClicked();
+    void on_listWidget_doubleClicked();
     
 private:
     Ui::ConfigSelector *ui;

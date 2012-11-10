@@ -13,9 +13,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <QMessageBox>
-#include <QTextStream>
-#include <QRegExp>
 #include "ServerTabWidget.h"
 #include "ui_ServerTabWidget.h"
 
@@ -46,11 +43,11 @@ void ServerTabWidget::init()
     playersFilterModel->setSourceModel(playersModel);
     ui->listView_Players->setModel(playersFilterModel);
 
-    connect(serverProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(readAllStandardOutput()));
-    connect(ui->lineEdit_ServerInput, SIGNAL(returnPressed()), this, SLOT(writeToProcess()));
-    connect(saveTimer, SIGNAL(timeout()), this, SLOT(saveTimer_Timeout()));
-    connect(ui->lineEdit_SearchPlayers, SIGNAL(textChanged(QString)), this, SLOT(lineEdit_SearchPlayers_textChanged()));
-    connect(ui->listView_Players, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(listView_Players_customContextMenuRequested(QPoint)));
+    connect(serverProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(on_serverProcess_readyReadStandardOutput()));
+    connect(ui->lineEdit_ServerInput, SIGNAL(returnPressed()), this, SLOT(on_lineEdit_ServerInput_returnPressed()));
+    connect(saveTimer, SIGNAL(timeout()), this, SLOT(on_saveTimer_Timeout()));
+    connect(ui->lineEdit_SearchPlayers, SIGNAL(textChanged(QString)), this, SLOT(on_lineEdit_SearchPlayers_textChanged()));
+    connect(ui->listView_Players, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(on_listView_Players_customContextMenuRequested(QPoint)));
 
     QString pro = "TerrariaServer.exe";
     QStringList args;
@@ -64,7 +61,7 @@ void ServerTabWidget::init()
     }
 }
 
-void ServerTabWidget::readAllStandardOutput()
+void ServerTabWidget::on_serverProcess_readyReadStandardOutput()
 {
     QTextStream stream(serverProcess->readAllStandardOutput());
     while(true)
@@ -79,20 +76,13 @@ void ServerTabWidget::readAllStandardOutput()
     }
 }
 
-void ServerTabWidget::writeToProcess()
+void ServerTabWidget::on_lineEdit_ServerInput_returnPressed()
 {
     writeToProcess(ui->lineEdit_ServerInput->text());
     ui->lineEdit_ServerInput->clear();
 }
 
-void ServerTabWidget::writeToProcess(QString text)
-{
-    QByteArray toWrite;
-    toWrite.append(text + "\n");
-    serverProcess->write(toWrite);
-}
-
-void ServerTabWidget::saveTimer_Timeout()
+void ServerTabWidget::on_saveTimer_Timeout()
 {
     if(!players.isEmpty()) //don't save if no one is connected -- no changes could be made.
     {
@@ -102,12 +92,12 @@ void ServerTabWidget::saveTimer_Timeout()
     }
 }
 
-void ServerTabWidget::lineEdit_SearchPlayers_textChanged()
+void ServerTabWidget::on_lineEdit_SearchPlayers_textChanged()
 {
     update_listView_Players_Filter();
 }
 
-void ServerTabWidget::listView_Players_customContextMenuRequested(QPoint p)
+void ServerTabWidget::on_listView_Players_customContextMenuRequested(QPoint p)
 {
     if(players.isEmpty())
         return;
@@ -118,7 +108,6 @@ void ServerTabWidget::listView_Players_customContextMenuRequested(QPoint p)
     contextMenu.addAction("Kick");
 
     QAction *selectedAction = contextMenu.exec(ui->listView_Players->mapToGlobal(p));
-
     if(selectedAction)
     {
         if(selectedAction->text() == "Kick")
@@ -127,6 +116,13 @@ void ServerTabWidget::listView_Players_customContextMenuRequested(QPoint p)
             writeToProcess("kick " + playerName);
         }
     }
+}
+
+void ServerTabWidget::writeToProcess(QString text)
+{
+    QByteArray toWrite;
+    toWrite.append(text + "\n");
+    serverProcess->write(toWrite);
 }
 
 void ServerTabWidget::update_listView_Players()

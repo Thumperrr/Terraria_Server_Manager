@@ -26,11 +26,10 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public slots:
-    void addServerTab(QString name);
-    void removeSelectedServerTab();
-    void actionConfigurations_Triggered();
-    void actionHost_Triggered();
-    void actionOptions_Triggered();
+    void on_actionShutdown_triggered();
+    void on_actionConfigurations_triggered();
+    void on_actionHost_triggered();
+    void on_actionOptions_triggered();
     
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -39,6 +38,8 @@ public:
     
 private:
     Ui::MainWindow *ui;
+    void addServerTab(QString name);
+    void removeSelectedServerTab();
 };
 
 #endif // MAINWINDOW_H
