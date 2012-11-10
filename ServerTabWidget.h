@@ -23,6 +23,8 @@ along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>.
 #include <QStringListModel>
 #include <QSortFilterProxyModel>
 #include <QRegExp>
+#include <QMenu>
+#include <QAction>
 #include "Utility.h"
 
 namespace Ui {
@@ -43,6 +45,7 @@ public slots:
     void writeToProcess();
     void saveTimer_Timeout();
     void lineEdit_SearchPlayers_textChanged();
+    void listView_Players_customContextMenuRequested(QPoint p);
 
 private:
     Ui::ServerTabWidget *ui;

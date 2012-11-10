@@ -50,6 +50,7 @@ void ServerTabWidget::init()
     connect(ui->lineEdit_ServerInput, SIGNAL(returnPressed()), this, SLOT(writeToProcess()));
     connect(saveTimer, SIGNAL(timeout()), this, SLOT(saveTimer_Timeout()));
     connect(ui->lineEdit_SearchPlayers, SIGNAL(textChanged(QString)), this, SLOT(lineEdit_SearchPlayers_textChanged()));
+    connect(ui->listView_Players, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(listView_Players_customContextMenuRequested(QPoint)));
 
     QString pro = "TerrariaServer.exe";
     QStringList args;
@@ -106,6 +107,28 @@ void ServerTabWidget::lineEdit_SearchPlayers_textChanged()
     update_listView_Players_Filter();
 }
 
+void ServerTabWidget::listView_Players_customContextMenuRequested(QPoint p)
+{
+    if(players.isEmpty())
+        return;
+    if(!ui->listView_Players->indexAt(p).isValid())
+        return;
+
+    QMenu contextMenu;
+    contextMenu.addAction("Kick");
+
+    QAction *selectedAction = contextMenu.exec(ui->listView_Players->mapToGlobal(p));
+
+    if(selectedAction)
+    {
+        if(selectedAction->text() == "Kick")
+        {
+            QString playerName = ui->listView_Players->indexAt(p).data().toString();
+            writeToProcess("kick " + playerName);
+        }
+    }
+}
+
 void ServerTabWidget::update_listView_Players()
 {
     playersModel->setStringList(players);
@@ -137,7 +160,7 @@ void ServerTabWidget::processLine(QString line)
     {
         QString playerName;
         if(line[0] == ':')
-            playerName = Utility::word(line, 2);
+            playerName = Utility::word(line, 2); //line is different when kicking a player
         else
             playerName = Utility::word(line);
 
