@@ -36,7 +36,7 @@ ConfigEditor::~ConfigEditor()
 
 void ConfigEditor::slot_pushButton_Cancel_clicked()
 {
-    done(0);
+    close();
 }
 
 void ConfigEditor::slot_pushButton_Save_clicked()

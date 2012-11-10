@@ -37,7 +37,7 @@ ConfigSelector::~ConfigSelector()
 void ConfigSelector::slot_listWidget_doubleClicked()
 {
     config = ui->listWidget->currentItem()->text();
-    done(0);
+    close();
 }
 
 QString ConfigSelector::getConfig()

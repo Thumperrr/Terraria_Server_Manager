@@ -42,6 +42,8 @@ void ConfigManager::slot_pushbutton_Done_clicked()
 }
 void ConfigManager::slot_pushbutton_Delete_clicked()
 {
+    if(!ui->listWidget_ConfigList->currentIndex().isValid())
+        return;
     QString configName = ui->listWidget_ConfigList->currentItem()->text();
 
     if(QMessageBox::information(this, tr("Warning"), tr("Are you sure you want to delete this configuration?"), QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
@@ -53,7 +55,10 @@ void ConfigManager::slot_pushbutton_Delete_clicked()
 }
 void ConfigManager::slot_pushbutton_Edit_clicked()
 {
+    if(!ui->listWidget_ConfigList->currentIndex().isValid())
+        return;
     QString configName = ui->listWidget_ConfigList->currentItem()->text();
+
     ConfigEditor *configEditor = new ConfigEditor(this);
     configEditor->editConfig(ConfigEditor::loadConfig(configName));
     configEditor->exec();
