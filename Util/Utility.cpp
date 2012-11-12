@@ -52,4 +52,69 @@ namespace Utility {
         QDir dir(path);
         return dir.entryList(nameFilters, QDir::NoFilter, QDir::Name);
     }
+
+    bool getWorldHeader(QString path, WorldHeader &header)
+    {
+        bool ret = true;
+        BinaryReader reader(path.toStdString());
+        if(reader.IsOpen())
+        {
+            header.releaseNumber = reader.ReadInt32();
+            header.name = QString::fromStdString(reader.ReadString());
+            header.id = reader.ReadInt32();
+            int x, y, w, h;
+
+            x = reader.ReadInt32();
+            w = reader.ReadInt32();
+            y = reader.ReadInt32();
+            h = reader.ReadInt32();
+
+            header.worldCoords = QRect(x, w, y, h);
+
+            y = reader.ReadInt32();
+            x = reader.ReadInt32();
+
+            header.maxTiles = QPoint(x, y);
+            header.spawnPoint = QPoint(reader.ReadInt32(), reader.ReadInt32());
+            header.surfaceLevel = reader.ReadDouble();
+            header.rockLayer = reader.ReadDouble();
+            header.temporaryTime = reader.ReadDouble();
+            header.isDayTime = reader.ReadBoolean();
+            header.moonPhase = reader.ReadInt32();
+            header.isBloodMoon = reader.ReadBoolean();
+            header.dungeonPoint = QPoint(reader.ReadInt32(), reader.ReadInt32());
+            header.isBoss1Dead = reader.ReadBoolean();
+            header.isBoss2Dead = reader.ReadBoolean();
+            header.isBoss3Dead = reader.ReadBoolean();
+            if(header.releaseNumber >= 0x24)
+            {
+                header.isGoblinArmyDefeated = reader.ReadBoolean();
+                header.isWizardSaved = reader.ReadBoolean();
+                header.isMechanicSaved = reader.ReadBoolean();
+                header.isGoblinArmyDefeated = reader.ReadBoolean();
+                header.isClownDefeated = reader.ReadBoolean();
+            }
+            if(header.releaseNumber >= 0x25)
+            {
+                header.isFrostDefeated = reader.ReadBoolean();
+            }
+            header.isShadowOrbSmashed = reader.ReadBoolean();
+            header.isMeteorSpawned = reader.ReadBoolean();
+            header.shadowOrbsSmashed = reader.ReadByte();
+
+            if(header.releaseNumber >= 0x24)
+            {
+                header.altarsDestroyed = reader.ReadInt32();
+                header.hardMode = reader.ReadBoolean();
+            }
+
+            header.invasionDelay = reader.ReadInt32();
+            header.invasionSize = reader.ReadInt32();
+            header.invasionType = reader.ReadInt32();
+            header.invasionPointX = reader.ReadDouble();
+        }
+        else
+            ret = false;
+        return ret;
+    }
 }
