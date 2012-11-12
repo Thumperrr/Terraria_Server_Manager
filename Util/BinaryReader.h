@@ -11,6 +11,7 @@ namespace Utility
     {
         public:
             BinaryReader(string s);
+            ~BinaryReader();
             bool IsOpen();
             void Close();
 

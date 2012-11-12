@@ -11,6 +11,10 @@ namespace Utility
         //this->fSize = ftell(file);
         //rewind(file);
     }
+    BinaryReader::~BinaryReader()
+    {
+        Close();
+    }
 
     bool BinaryReader::IsOpen()
     {
