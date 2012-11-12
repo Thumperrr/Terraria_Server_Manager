@@ -13,36 +13,31 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>. */
 
-#ifndef CONFIGMANAGER_H
-#define CONFIGMANAGER_H
+#ifndef CONFIGSELECTOR_H
+#define CONFIGSELECTOR_H
 
 #include <QDialog>
-#include <QListWidgetItem>
-#include <QMessageBox>
-#include "ConfigEditor.h"
-#include "Utility.h"
+#include "../Util/Utility.h"
 
 namespace Ui {
-class ConfigManager;
+class ConfigSelector;
 }
 
-class ConfigManager : public QDialog
+class ConfigSelector : public QDialog
 {
     Q_OBJECT
     
 public:
-    explicit ConfigManager(QWidget *parent = 0);
-    ~ConfigManager();
+    explicit ConfigSelector(QWidget *parent = 0);
+    ~ConfigSelector();
+    QString getConfig();
 
 public slots:
-    void slot_pushbutton_Delete_clicked();
-    void slot_pushbutton_Edit_clicked();
-    void slot_pushbutton_New_clicked();
-    void slot_pushbutton_Done_clicked();
+    void slot_listWidget_doubleClicked();
     
 private:
-    void refresh_listWidget_ConfigList();
-    Ui::ConfigManager *ui;
+    Ui::ConfigSelector *ui;
+    QString config;
 };
 
-#endif // CONFIGMANAGER_H
+#endif // CONFIGSELECTOR_H

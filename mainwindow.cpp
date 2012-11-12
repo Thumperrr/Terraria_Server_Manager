@@ -15,10 +15,10 @@ along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "ServerTabWidget.h"
-#include "ConfigManager.h"
-#include "ConfigSelector.h"
-#include "Options.h"
+#include "Widgets/ServerTabWidget.h"
+#include "Widgets/ConfigManager.h"
+#include "Widgets/ConfigSelector.h"
+#include "Widgets/Options.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

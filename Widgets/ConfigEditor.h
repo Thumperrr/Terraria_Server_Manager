@@ -21,7 +21,7 @@ along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
-#include "Utility.h"
+#include "../Util/Utility.h"
 
 struct Configuration {
     QString name; //name of the configuration

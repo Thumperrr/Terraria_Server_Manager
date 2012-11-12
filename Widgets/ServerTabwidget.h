@@ -27,7 +27,7 @@ along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>.
 #include <QAction>
 #include <QMessageBox>
 #include <QTextStream>
-#include "Utility.h"
+#include "../Util/Utility.h"
 
 namespace Ui {
    class ServerTabWidget;
