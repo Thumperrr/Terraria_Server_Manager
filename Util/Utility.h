@@ -21,6 +21,7 @@ along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDir>
 #include <QRect>
 #include <QPoint>
+#include <QTextStream>
 #include <QMessageBox>
 #include "BinaryReader.h"
 
@@ -61,12 +62,29 @@ namespace Utility
         double invasionPointX;
     };
 
+    struct Configuration {
+        QString name; //name of the configuration
+        QString world; //location of the world to load on startup
+        QString password;
+        QString motd;
+        QString worldpath; //path where world files are stored
+        QString worldname; //name for autocreated worlds
+        QString banlist;
+        int maxPlayers;
+        int autocreate; //Auto create size, 1:small 2:medium 3:large
+        int port;
+        int secure; //Enable security, 0:no, 1:yes
+        int lang; //language, 1:English, 2:German, 3:Italian, 4:French, 5:Spanish
+        int priority; //native priority, 0:Realtime, 1:High, 2:AboveNormal, 3:Normal, 4:BelowNormal, 5:Idle
+    };
+
     QString left(QString line, char separator);
     QString right(QString line, char separator);
     QString word(QString line, int wordNumber = 1);
     QStringList splitString(QString line, QString separator = " ");
     QStringList getDirectoryEntryList(QStringList nameFilters, QString path = QDir::currentPath());
     bool getWorldHeader(QString path, WorldHeader &header);
+    bool loadConfig(QString configName, Configuration &config);
 }
 
 #endif // UTILITY_H

@@ -19,6 +19,7 @@ along with Terraria Server Manager.  If not, see <http://www.gnu.org/licenses/>.
 #include "Widgets/ConfigManager.h"
 #include "Widgets/ConfigSelector.h"
 #include "Widgets/Options.h"
+#include "Util/Utility.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -76,7 +77,7 @@ void MainWindow::slot_actionOptions_triggered()
 }
 
 void MainWindow::addServerTab(QString name) {
-    QWidget *tabWidget = new ServerTabWidget(name + ".cfg");
+    QWidget *tabWidget = new ServerTabWidget(name);
     ui->tabWidget->addTab(tabWidget, name);
 }
 

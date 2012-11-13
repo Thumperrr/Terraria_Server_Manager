@@ -29,7 +29,7 @@
          <property name="maximumSize">
           <size>
            <width>175</width>
-           <height>111</height>
+           <height>200</height>
           </size>
          </property>
         </widget>
@@ -60,7 +60,7 @@
        <property name="maximumSize">
         <size>
          <width>175</width>
-         <height>135</height>
+         <height>125</height>
         </size>
        </property>
        <property name="contextMenuPolicy">

@@ -117,4 +117,50 @@ namespace Utility {
             ret = false;
         return ret;
     }
+
+    bool loadConfig(QString configName, Configuration &config)
+    {
+        QFile file(QDir::currentPath() + "/" + configName + ".cfg");
+        if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            return false;
+        }
+
+        QTextStream stream(&file);
+        while(true)
+        {
+            QString line = stream.readLine();
+            if(line.isEmpty() || line.isNull() || stream.atEnd())
+                break;
+            if(!line.contains("#")) //is a comment (first line); ignore
+            {
+                if(line[0] == '@') //Configuration.name
+                    config.name = right(line, '@');
+                else if(line.contains("maxplayers="))
+                    config.maxPlayers = right(line, '=').toInt();
+                else if(line.contains("world="))
+                    config.world = right(line, '=');
+                else if(line.contains("port="))
+                    config.port = right(line, '=').toInt();
+                else if(line.contains("password="))
+                    config.password = right(line, '=');
+                else if(line.contains("motd="))
+                    config.motd = right(line, '=');
+                else if(line.contains("worldpath="))
+                    config.worldpath = right(line, '=');
+                else if(line.contains("autocreate="))
+                    config.autocreate = right(line, '=').toInt();
+                else if(line.contains("worldname="))
+                    config.worldname = right(line, '=');
+                else if(line.contains("banlist="))
+                    config.banlist = right(line, '=');
+                else if(line.contains("secure="))
+                    config.secure = right(line, '=').toInt();
+                else if(line.contains("lang="))
+                    config.lang = right(line, '=').toInt();
+                else if(line.contains("priority"))
+                    config.priority = right(line, '=').toInt();
+            }
+        }
+        return true;
+    }
 }

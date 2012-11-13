@@ -52,19 +52,18 @@ public slots:
 private:
     Ui::ServerTabWidget *ui;
     QProcess *serverProcess;
-    QString config;
     QTimer *saveTimer;
+    QString config;
+    QString worldPath;
 
     QStringListModel *playersModel;
     QSortFilterProxyModel *playersFilterModel;
     QStringList players;
 
-
     void processLine(QString line);
     void update_listView_Players();
     void update_listView_Players_Filter();
-
-    bool playerConnecting;
+    void update_textBrowser_WorldInfo();
 };
 
 #endif // SERVERTABWIDGET_H

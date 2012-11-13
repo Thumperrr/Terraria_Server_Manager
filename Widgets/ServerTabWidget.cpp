@@ -29,6 +29,7 @@ ServerTabWidget::~ServerTabWidget()
     delete serverProcess;
     delete saveTimer;
     delete playersModel;
+    delete playersFilterModel;
 }
 
 void ServerTabWidget::init()
@@ -43,15 +44,21 @@ void ServerTabWidget::init()
     playersFilterModel->setSourceModel(playersModel);
     ui->listView_Players->setModel(playersFilterModel);
 
+    Utility::Configuration configuration;
+    if(Utility::loadConfig(this->config, configuration))
+        worldPath = configuration.world;
+
     connect(serverProcess, SIGNAL(readyReadStandardOutput()), this, SLOT(slot_serverProcess_readyReadStandardOutput()));
     connect(ui->lineEdit_ServerInput, SIGNAL(returnPressed()), this, SLOT(slot_lineEdit_ServerInput_returnPressed()));
     connect(saveTimer, SIGNAL(timeout()), this, SLOT(slot_saveTimer_Timeout()));
     connect(ui->lineEdit_SearchPlayers, SIGNAL(textChanged(QString)), this, SLOT(slot_lineEdit_SearchPlayers_textChanged()));
     connect(ui->listView_Players, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slot_listView_Players_customContextMenuRequested(QPoint)));
 
+    update_textBrowser_WorldInfo();
+
     QString pro = "TerrariaServer.exe";
     QStringList args;
-    args << "-config" << config;
+    args << "-config" << config + ".cfg";
     serverProcess->start(pro, args);
 
     if(!serverProcess->waitForStarted())
@@ -59,6 +66,7 @@ void ServerTabWidget::init()
         QMessageBox::information(this, tr("Error"), tr("Unable to start the server."), QMessageBox::Ok);
         close();
     }
+
 }
 
 void ServerTabWidget::slot_serverProcess_readyReadStandardOutput()
@@ -136,6 +144,42 @@ void ServerTabWidget::update_listView_Players_Filter()
     playersFilterModel->setFilterRegExp(regExp);
 }
 
+void ServerTabWidget::update_textBrowser_WorldInfo()
+{
+    if(worldPath.isNull() || worldPath.isEmpty())
+    {
+        ui->textBrowser_WorldInfo->setText("Unable to determine world location.");
+        return;
+    }
+
+    QString info;
+    Utility::WorldHeader header;
+    if(!Utility::getWorldHeader(worldPath, header))
+    {
+        ui->textBrowser_WorldInfo->setText("Unable to open .wld file.");
+        return;
+    }
+    info.append(QString("%1\n").arg(header.name));
+    info.append(QString("Version: %1\n").arg(header.releaseNumber));
+    info.append(QString("ID: %1\n").arg(header.id));
+    info.append(QString("Spawn Point: (%1, %2)\n").arg(header.spawnPoint.x()).arg(header.spawnPoint.y()));
+    info.append(QString("Players Online: %1\n\n").arg(players.size()));
+    info.append("Bosses Downed:\n");
+    if(header.isBoss1Dead)
+        info.append("Eye of Cthulhu\n");
+    if(header.isBoss2Dead)
+        info.append("Eater of Worlds\n");
+    if(header.isBoss3Dead)
+        info.append("Skeletron\n");
+    info.append("\n");
+    if(header.hardMode)
+        info.append("Hardmode enabled: Yes");
+    else
+        info.append("Hardmode enabled: No");
+
+    ui->textBrowser_WorldInfo->setText(info);
+}
+
 void ServerTabWidget::processLine(QString line)
 {
     bool appendOutput = true;
@@ -150,6 +194,7 @@ void ServerTabWidget::processLine(QString line)
         {
             players.push_back(playerName);
             update_listView_Players();
+            update_textBrowser_WorldInfo();
         }
     }
     else if(line.contains("has left.")) //a player might have left
@@ -170,6 +215,7 @@ void ServerTabWidget::processLine(QString line)
                 }
             }
             update_listView_Players();
+            update_textBrowser_WorldInfo();
         }
     }
     else if(line.contains("Saving world data:"))
